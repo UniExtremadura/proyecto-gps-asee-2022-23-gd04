@@ -136,7 +136,8 @@ class Login : AppCompatActivity()
     {
         if(view.isEnabled)
         {
-
+            val intent = Intent(this, Register::class.java)
+            startActivity(intent)
         }
     }
 
