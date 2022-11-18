@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/init"
+        android:id="@+id/init"
+        android:icon="@drawable/home"
+        />
+
+    <item
+        android:title="@string/reminders"
+        android:id="@+id/reminders"
+        android:icon="@drawable/remidner"
+        />
+
+    <item
+        android:title="@string/first_aid_kit"
+        android:id="@+id/first_aid_kit"
+        android:icon="@drawable/first_aid_kid"
+        />
+
+    <item
+        android:title="@string/pharmacies"
+        android:id="@+id/pharmacies"
+        android:icon="@drawable/maps"
+        />
+</menu>

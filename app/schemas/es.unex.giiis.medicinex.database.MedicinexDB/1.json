@@ -1,0 +1,142 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "0d5f6aa8f3e71da7a9a93a9d11bc8568",
+    "entities": [
+      {
+        "tableName": "medicines",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`nRegistro` TEXT NOT NULL, `nombre` TEXT, `lab_titular` TEXT, `c_presc` TEXT, `comerc` INTEGER, `receta` INTEGER, `conduc` INTEGER, `ema` INTEGER, `dosis` TEXT, `docs` TEXT, `fotos` TEXT, `p_activos` TEXT, `excipientes` TEXT, `v_administracion` TEXT, `presentaciones` TEXT, `forma_farma` TEXT, `forma_farma_simpli` TEXT, `cluster` TEXT, `seccion` INTEGER, PRIMARY KEY(`nRegistro`))",
+        "fields": [
+          {
+            "fieldPath": "nRegistro",
+            "columnName": "nRegistro",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "labTitular",
+            "columnName": "lab_titular",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cPresc",
+            "columnName": "c_presc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "comerc",
+            "columnName": "comerc",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "receta",
+            "columnName": "receta",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "conduc",
+            "columnName": "conduc",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ema",
+            "columnName": "ema",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dosis",
+            "columnName": "dosis",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "docs",
+            "columnName": "docs",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fotos",
+            "columnName": "fotos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pActivos",
+            "columnName": "p_activos",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "excipientes",
+            "columnName": "excipientes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "vAdministracion",
+            "columnName": "v_administracion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "presentaciones",
+            "columnName": "presentaciones",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "formaFarma",
+            "columnName": "forma_farma",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "formaFarmaSimpli",
+            "columnName": "forma_farma_simpli",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cluster",
+            "columnName": "cluster",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "seccion",
+            "columnName": "seccion",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "nRegistro"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0d5f6aa8f3e71da7a9a93a9d11bc8568')"
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "962568963975",
+    "firebase_url": "https://farma-byte-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "farma-byte",
+    "storage_bucket": "farma-byte.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962568963975:android:466b7f221ac5dc4b817522",
+        "android_client_info": {
+          "package_name": "com.unex.medicinex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962568963975-10425gu3pek2l3dkicu4qjie3oea77mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1LF3bsAoZ5HPlgaOHvVDW59l1C2nx0fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962568963975-10425gu3pek2l3dkicu4qjie3oea77mm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962568963975:android:9e47e9e941828ea8817522",
+        "android_client_info": {
+          "package_name": "es.unex.giiis.intents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962568963975-10425gu3pek2l3dkicu4qjie3oea77mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1LF3bsAoZ5HPlgaOHvVDW59l1C2nx0fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962568963975-10425gu3pek2l3dkicu4qjie3oea77mm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962568963975:android:f4d6fe476c54b7a5817522",
+        "android_client_info": {
+          "package_name": "es.unex.giiis.medicinex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962568963975-10425gu3pek2l3dkicu4qjie3oea77mm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1LF3bsAoZ5HPlgaOHvVDW59l1C2nx0fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962568963975-10425gu3pek2l3dkicu4qjie3oea77mm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

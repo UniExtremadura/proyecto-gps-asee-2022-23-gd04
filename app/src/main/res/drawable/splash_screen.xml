@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list android:opacity="opaque" xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/lightBlue"
+                android:endColor="@color/lightPurple"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+    <item
+        android:width="260dp"
+        android:height="260dp"
+        android:gravity="center">
+        <bitmap android:src="@drawable/medicinex"></bitmap>
+    </item>
+</layer-list>
