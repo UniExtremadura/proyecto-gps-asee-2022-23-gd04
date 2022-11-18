@@ -128,7 +128,8 @@ class Login : AppCompatActivity()
     {
         if(view.isEnabled)
         {
-
+            val intent = Intent(this, RecoverAccount::class.java)
+            startActivity(intent)
         }
     }
 
