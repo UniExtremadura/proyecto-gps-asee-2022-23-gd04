@@ -47,7 +47,6 @@ class MedicineInformation(private var medicina : Medicina) : Fragment()
 
         }catch (e : Exception){/**/}
 
-
         binding.searchOnWeb.setOnClickListener {
 
             if(medicina.docs?.isNotEmpty() == true)

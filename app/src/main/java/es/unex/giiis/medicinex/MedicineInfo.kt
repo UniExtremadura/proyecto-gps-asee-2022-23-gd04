@@ -9,6 +9,7 @@ import es.unex.giiis.medicinex.databinding.ActivityMedicineInfoBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.content.Intent
 
 class MedicineInfo : AppCompatActivity()
 {
@@ -36,6 +37,9 @@ class MedicineInfo : AppCompatActivity()
             closeAction()
         }
 
+        binding.shareButton.setOnClickListener {
+            shareMedicine()
+        }
 
         val viewPager = binding.viewPager
         val tablayout = binding.tablayout
@@ -67,5 +71,19 @@ class MedicineInfo : AppCompatActivity()
     private fun closeAction()
     {
         onBackPressed()
+    }
+
+    private fun shareMedicine()
+    {
+        try
+        {
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, medicamento.toString())
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(intent, null)
+            startActivity(shareIntent)
+        }catch(e : Exception){/**/}
     }
 }

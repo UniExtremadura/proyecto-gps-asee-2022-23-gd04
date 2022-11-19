@@ -27,3 +27,97 @@ data class Medicina
     @ColumnInfo(name = "cluster") var cluster : String?, // Categoría del medicamento.
     @ColumnInfo(name = "seccion") var seccion : Char?, // Letra de la sección a la que pertenece el medicamento (coincide con la primera letra del nombre del medicamento).
 )
+{
+    override fun toString() : String
+    {
+        var medicineText = ""
+
+        medicineText += "Nombre: $nombre\n\n"
+        medicineText += "Número de registro: ${nRegistro}\n\n"
+        medicineText += "Creado por: $labTitular\n\n"
+        medicineText += "$cPresc\n\n"
+
+        medicineText += if(comerc == true) {"Se comercializa\n\n"} else {"No se comercializa\n\n"}
+
+        medicineText += if(receta == true) {"Necesita receta\n\n"} else {"No necesita receta\n\n"}
+
+        medicineText += if(conduc == true) {"Afecta a la conducción\n\n"} else {"No afecta a la conducción\n\n"}
+
+        medicineText += if(ema == true) {"Registrado por la EMA\n\n"} else {"No registrado por la EMA\n\n"}
+
+        medicineText += "Dosis: $dosis\n\n"
+
+        if(docs != null)
+        {
+            for(doc in docs!!)
+            {
+                if(doc.url != null) {  medicineText += "PDF: ${doc.url}\n\n" }
+                if(doc.urlHtml != null) {  medicineText += "WEB con más info: ${doc.urlHtml}\n\n" }
+            }
+        }
+
+        if(fotos != null)
+        {
+            for(foto in fotos!!)
+            {
+                if(foto.url != null) {  medicineText += "Foto: ${foto.url}\n\n" }
+            }
+        }
+
+        if(pActivos != null)
+        {
+            medicineText += "Principios activos:\n\n"
+
+            for(pActivo in pActivos!!)
+            {
+                //if(pActivo != null)
+                medicineText += "\t- ${pActivo.nombre} : ${pActivo.cantidad} ${pActivo.unidad}\n\n"
+            }
+        }
+
+        if(excipientes != null)
+        {
+            medicineText += "Excipientes:\n\n"
+
+            for(excipiente in excipientes!!)
+            {
+                //if(excipiente != null)
+                medicineText += "\t- ${excipiente.nombre} : ${excipiente.cantidad} ${excipiente.unidad}\n\n"
+            }
+        }
+
+        if(vAdministracion != null)
+        {
+            medicineText += "Vías de adminsitración:\n\n"
+
+            for(via in vAdministracion!!)
+            {
+                //if(via != null)
+                medicineText += "\t- ${via.nombre}\n\n"
+            }
+        }
+
+        if(presentaciones != null)
+        {
+            medicineText += "Presentaciones:\n\n"
+
+            for(presentacion in presentaciones!!)
+            {
+                //if(presentacion != null)
+                medicineText += "\t- ${presentacion.nombre}\n\n"
+            }
+        }
+
+        if(formaFarma != null)
+        {
+            medicineText += "Forma farmacéutica: ${formaFarma!!.nombre}\n\n"
+        }
+
+        if(formaFarmaSimpli != null)
+        {
+            medicineText += "Forma farmacéutica simplificada: ${formaFarmaSimpli!!.nombre}\n\n"
+        }
+
+        return medicineText
+    }
+}
