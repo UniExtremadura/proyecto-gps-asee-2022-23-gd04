@@ -14,6 +14,7 @@ class Menu : AppCompatActivity()
     private lateinit var binding: ActivityMenuBinding
     private lateinit var fragmentManager: FragmentManager
     private var mainMenu : MainMenu? = null
+    private var firstAidKit : FirstAidKitFragment? = null
     private var activeFragments = booleanArrayOf(false, false, false, false) // MainMenu / Reminders / First aid kit / Maps
     private lateinit var netManager : NetworkChangeListener
 
@@ -34,6 +35,11 @@ class Menu : AppCompatActivity()
                 R.id.init ->
                 {
                     addOrShowFragment( 0)
+                }
+
+                R.id.first_aid_kit ->
+                {
+                    addOrShowFragment(2)
                 }
             }
             true
@@ -85,12 +91,17 @@ class Menu : AppCompatActivity()
             when(pos)
             {
                 0 -> { mainMenu = MainMenu();  fragmentTransaction.add(binding.frameLayout.id, mainMenu!!) }
+                2 -> { firstAidKit = FirstAidKitFragment(); fragmentTransaction.add(binding.frameLayout.id, firstAidKit!!) }
             }
         }
         else
         {
             fragmentTransaction.show(getFragmentByPos(pos)!!)
 
+            when(pos)
+            {
+                2 -> firstAidKit!!.updateUI()
+            }
         }
 
         fragmentTransaction.commit()
@@ -103,6 +114,7 @@ class Menu : AppCompatActivity()
        when(pos)
        {
            0 -> { return mainMenu }
+           2 -> { return firstAidKit }
        }
         return null
     }
@@ -110,6 +122,13 @@ class Menu : AppCompatActivity()
     internal fun openSettings()
     {
         val intent = Intent(this, Profile::class.java)
+        startActivity(intent)
+    }
+
+    internal fun showMedicineInfo(nregistro : String)
+    {
+        val intent = Intent(this, MedicineInfo::class.java)
+        intent.putExtra("nregistro", nregistro)
         startActivity(intent)
     }
 }
