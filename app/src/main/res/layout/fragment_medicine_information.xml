@@ -250,6 +250,20 @@
             app:layout_constraintStart_toEndOf="@+id/merchantable_iv"
             app:layout_constraintTop_toTopOf="@+id/fastData" />
 
+        <ImageView
+            android:id="@+id/downloadPdf"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_outline"
+            android:contentDescription="@string/download_pdf"
+            android:padding="2dp"
+            android:src="@drawable/download_pdf"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fastData"
+            app:layout_constraintTop_toBottomOf="@+id/identifiersRectangle"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/searchOnWeb"
@@ -263,7 +277,7 @@
             android:padding="2dp"
             android:src="@drawable/search"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fastData"
+            app:layout_constraintStart_toEndOf="@+id/downloadPdf"
             app:layout_constraintTop_toBottomOf="@+id/identifiersRectangle"
             app:layout_constraintEnd_toStartOf="@id/addToFAK"
             app:layout_constraintVertical_bias="0.0" />
