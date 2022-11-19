@@ -44,6 +44,27 @@ class ManageProfile : AppCompatActivity()
         }
     }
 
+    fun cleanAccount(view: View)
+    {
+        if (view.isEnabled)
+        {
+            val path: String = "accounts/" + GeneralUtilities.getAccountNameByMail(account.email) + "/firstAidKit"
+            val accountFirstAidKitRef = Firebase.database.getReference(path)
+
+            accountFirstAidKitRef.get().addOnSuccessListener {
+
+                for (cure in it.children)
+                {
+                    if(cure.value.toString() != "-1")
+                    {
+                        Firebase.database.getReference(path + "/${cure.key}").removeValue()
+                    }
+                }
+                ScreenMessages.firstAidKitCleaned(this)
+            }
+        }
+    }
+
     fun showHidePassword(view: View)
     {
         try
