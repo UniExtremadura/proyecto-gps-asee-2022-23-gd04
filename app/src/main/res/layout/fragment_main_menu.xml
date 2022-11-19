@@ -11,6 +11,106 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:id="@+id/topRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/yellow_gradient_rectangle_holder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/searchRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/purple_gradient_rectangle_holder"
+            app:layout_constraintBottom_toBottomOf="@+id/topRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/topRectangle"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="@+id/topRectangle"
+            app:layout_constraintTop_toTopOf="@+id/topRectangle"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/searchButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:contentDescription="@string/glass"
+            android:src="@drawable/glass"
+            app:layout_constraintBottom_toBottomOf="@+id/searchRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/searchRectangle"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/searchRectangle"
+            app:layout_constraintTop_toTopOf="@+id/searchRectangle"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="TouchTargetSizeCheck" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/medicine_rv"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topRectangle"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/queryText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="5dp"
+            android:autofillHints=""
+            android:background="@null"
+            android:ems="10"
+            android:hint="@string/search_bar_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/searchRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/searchRectangle"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/searchRectangle"
+            app:layout_constraintTop_toTopOf="@+id/searchRectangle"
+            app:layout_constraintVertical_bias="0.666"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+
+        <CheckBox
+            android:id="@+id/checkBoxReceipt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/black"
+            android:fontFamily="@font/jura"
+            android:padding="5dp"
+            android:text="@string/show_no_receipt_needed"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/topRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/topRectangle"
+            app:layout_constraintStart_toStartOf="@+id/topRectangle"
+            app:layout_constraintTop_toTopOf="@+id/topRectangle"
+            app:layout_constraintVertical_bias="0.876"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/openSettings"

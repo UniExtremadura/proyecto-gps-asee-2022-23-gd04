@@ -134,6 +134,12 @@ class Menu : AppCompatActivity()
         startActivity(intent)
     }
 
+    internal fun openCatalogue()
+    {
+        val intent = Intent(this, Catalogue::class.java)
+        startActivity(intent)
+    }
+
     internal fun showMedicineInfo(nregistro : String)
     {
         val intent = Intent(this, MedicineInfo::class.java)
