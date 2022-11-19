@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MedicineInformation">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/nameRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/white_rectangle_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/jura"
+            android:text="@string/placeholder_medicine_texts"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/nameRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/nameRectangle"
+            app:layout_constraintStart_toStartOf="@+id/nameRectangle"
+            app:layout_constraintTop_toTopOf="@+id/nameRectangle" />
+
+        <View
+            android:id="@+id/prescRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/white_rectangle_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameRectangle" />
+
+        <TextView
+            android:id="@+id/presc"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/jura"
+            android:text="@string/placeholder_medicine_texts"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/prescRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/prescRectangle"
+            app:layout_constraintStart_toStartOf="@+id/prescRectangle"
+            app:layout_constraintTop_toTopOf="@+id/prescRectangle" />
+
+        <View
+            android:id="@+id/viaRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/white_rectangle_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/prescRectangle" />
+
+        <TextView
+            android:id="@+id/via"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/jura"
+            android:text="@string/placeholder_medicine_texts"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/viaRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/viaRectangle"
+            app:layout_constraintStart_toStartOf="@+id/viaRectangle"
+            app:layout_constraintTop_toTopOf="@+id/viaRectangle" />
+
+        <View
+            android:id="@+id/dosisRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/white_rectangle_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viaRectangle" />
+
+        <TextView
+            android:id="@+id/dosis"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/jura"
+            android:text="@string/placeholder_medicine_texts"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/dosisRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/dosisRectangle"
+            app:layout_constraintStart_toStartOf="@+id/dosisRectangle"
+            app:layout_constraintTop_toTopOf="@+id/dosisRectangle" />
+
+        <View
+            android:id="@+id/labRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/white_rectangle_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dosisRectangle" />
+
+        <TextView
+            android:id="@+id/lab"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/jura"
+            android:text="@string/placeholder_medicine_texts"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/labRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/labRectangle"
+            app:layout_constraintStart_toStartOf="@+id/labRectangle"
+            app:layout_constraintTop_toTopOf="@+id/labRectangle" />
+
+
+        <View
+            android:id="@+id/identifiersRectangle"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/white_rectangle_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labRectangle" />
+
+        <TextView
+            android:id="@+id/identifiers"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/jura"
+            android:text="@string/placeholder_medicine_texts"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/identifiersRectangle"
+            app:layout_constraintEnd_toEndOf="@+id/identifiersRectangle"
+            app:layout_constraintStart_toStartOf="@+id/identifiersRectangle"
+            app:layout_constraintTop_toTopOf="@+id/identifiersRectangle" />
+
+        <View
+            android:id="@+id/fastData"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ocre_rectangle_holder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/identifiersRectangle"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/conduc_iv"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/save_driving"
+            android:contentDescription="@string/conduc"
+            app:layout_constraintBottom_toBottomOf="@+id/fastData"
+            app:layout_constraintStart_toStartOf="@+id/fastData"
+            app:layout_constraintTop_toTopOf="@+id/fastData" />
+
+        <ImageView
+            android:id="@+id/merchantable_iv"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/merchantable"
+            app:layout_constraintBottom_toBottomOf="@+id/fastData"
+            app:layout_constraintEnd_toStartOf="@id/needs_receipt_iv"
+            android:contentDescription="@string/merchantable"
+            app:layout_constraintStart_toEndOf="@+id/conduc_iv"
+            app:layout_constraintTop_toTopOf="@+id/fastData" />
+
+        <ImageView
+            android:id="@+id/needs_receipt_iv"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/prescription"
+            android:contentDescription="@string/receipt_needed"
+            app:layout_constraintBottom_toBottomOf="@+id/fastData"
+            app:layout_constraintEnd_toEndOf="@+id/fastData"
+            app:layout_constraintStart_toEndOf="@+id/merchantable_iv"
+            app:layout_constraintTop_toTopOf="@+id/fastData" />
+
+
+        <ImageView
+            android:id="@+id/searchOnWeb"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/button_outline"
+            android:contentDescription="@string/search_on_web"
+            android:padding="2dp"
+            android:src="@drawable/search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fastData"
+            app:layout_constraintTop_toBottomOf="@+id/identifiersRectangle"
+            app:layout_constraintEnd_toStartOf="@id/addToFAK"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/addToFAK"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/button_outline"
+            android:contentDescription="@string/add_to_afk"
+            android:padding="2dp"
+            android:src="@drawable/add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.962"
+            app:layout_constraintStart_toEndOf="@+id/searchOnWeb"
+            app:layout_constraintTop_toBottomOf="@+id/identifiersRectangle"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
