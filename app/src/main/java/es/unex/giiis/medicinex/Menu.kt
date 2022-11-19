@@ -106,4 +106,10 @@ class Menu : AppCompatActivity()
        }
         return null
     }
+
+    internal fun openSettings()
+    {
+        val intent = Intent(this, Profile::class.java)
+        startActivity(intent)
+    }
 }
