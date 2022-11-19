@@ -14,6 +14,7 @@ class Menu : AppCompatActivity()
     private lateinit var binding: ActivityMenuBinding
     private lateinit var fragmentManager: FragmentManager
     private var mainMenu : MainMenu? = null
+    private var reminders : Reminders? = null
     private var firstAidKit : FirstAidKitFragment? = null
     private var activeFragments = booleanArrayOf(false, false, false, false) // MainMenu / Reminders / First aid kit / Maps
     private lateinit var netManager : NetworkChangeListener
@@ -35,6 +36,11 @@ class Menu : AppCompatActivity()
                 R.id.init ->
                 {
                     addOrShowFragment( 0)
+                }
+
+                R.id.reminders ->
+                {
+                    addOrShowFragment( 1)
                 }
 
                 R.id.first_aid_kit ->
@@ -91,6 +97,7 @@ class Menu : AppCompatActivity()
             when(pos)
             {
                 0 -> { mainMenu = MainMenu();  fragmentTransaction.add(binding.frameLayout.id, mainMenu!!) }
+                1 -> { reminders = Reminders();  fragmentTransaction.add(binding.frameLayout.id, reminders!!) }
                 2 -> { firstAidKit = FirstAidKitFragment(); fragmentTransaction.add(binding.frameLayout.id, firstAidKit!!) }
             }
         }
@@ -100,6 +107,7 @@ class Menu : AppCompatActivity()
 
             when(pos)
             {
+                1 -> reminders!!.updateUI()
                 2 -> firstAidKit!!.updateUI()
             }
         }
@@ -114,6 +122,7 @@ class Menu : AppCompatActivity()
        when(pos)
        {
            0 -> { return mainMenu }
+           1 -> { return reminders }
            2 -> { return firstAidKit }
        }
         return null
