@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0d5f6aa8f3e71da7a9a93a9d11bc8568",
+    "identityHash": "3c0f731ebe3023bc67d52a535a719f2f",
     "entities": [
       {
         "tableName": "medicines",
@@ -131,12 +131,52 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "letters",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`letter` INTEGER NOT NULL, PRIMARY KEY(`letter`))",
+        "fields": [
+          {
+            "fieldPath": "letter",
+            "columnName": "letter",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "letter"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`categorie` TEXT NOT NULL, PRIMARY KEY(`categorie`))",
+        "fields": [
+          {
+            "fieldPath": "categorie",
+            "columnName": "categorie",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "categorie"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0d5f6aa8f3e71da7a9a93a9d11bc8568')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c0f731ebe3023bc67d52a535a719f2f')"
     ]
   }
 }

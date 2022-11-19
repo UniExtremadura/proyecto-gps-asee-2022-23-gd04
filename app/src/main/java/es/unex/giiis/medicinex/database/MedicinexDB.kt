@@ -7,8 +7,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 
+@Database(entities = [Medicina::class, Letter::class, Categorie::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class MedicinexDB : RoomDatabase()
 {
+    abstract fun medicineDao() : MedicineDAO
+    abstract fun letterDao() : LetterDAO
+    abstract fun sectionDao() : CategorieDAO
+
     companion object
     {// Patrón Singleton aplicado.
         @Volatile
