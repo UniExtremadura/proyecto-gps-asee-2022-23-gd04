@@ -13,6 +13,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import es.unex.giiis.medicinex.database.Medicina
 import es.unex.giiis.medicinex.databinding.FragmentMedicineInformationBinding
+import android.app.DownloadManager
+import android.content.Context
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MedicineInformation(private var medicina : Medicina) : Fragment()
 {
@@ -47,6 +51,22 @@ class MedicineInformation(private var medicina : Medicina) : Fragment()
 
         }catch (e : Exception){/**/}
 
+        binding.downloadPdf.setOnClickListener {
+
+            if(medicina.docs?.isNotEmpty() == true)
+            {
+                if (medicina.docs?.first()?.url != null)
+                {
+                    Toast.makeText(requireActivity(), R.string.downloading_file, Toast.LENGTH_SHORT).show()
+                    downloadPdf(medicina.docs?.first()?.url!!, medicina.nombre!!)
+                }
+            }
+            else
+            {
+                Toast.makeText(requireActivity(), R.string.pdf_does_not_exist, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.searchOnWeb.setOnClickListener {
 
             if(medicina.docs?.isNotEmpty() == true)
@@ -67,6 +87,25 @@ class MedicineInformation(private var medicina : Medicina) : Fragment()
         }
 
         return binding.root
+    }
+
+    private fun downloadPdf(url : String, nombre : String)
+    {
+        lifecycleScope.launch {
+            try
+            {
+                val request = DownloadManager.Request(Uri.parse(url))
+                    .setTitle(nombre)
+                    .setDescription("Descargando medicamento... ")
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setAllowedOverMetered(true)
+
+                val  dm: DownloadManager = requireActivity().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+                dm.enqueue(request)
+
+            }catch(e : Exception) {/**/}
+        }
     }
 
     private fun searchOnWeb(url: String)
