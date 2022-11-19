@@ -52,4 +52,7 @@ class Converters
 
     @TypeConverter
     fun jsonToFormaFarmaceutica(value : String?) = Gson().fromJson(value, FormaFarmaceutica::class.java)!!
+
+    @TypeConverter
+    fun categorieToDb(value : Categorie?) = value!!.categorie
 }
