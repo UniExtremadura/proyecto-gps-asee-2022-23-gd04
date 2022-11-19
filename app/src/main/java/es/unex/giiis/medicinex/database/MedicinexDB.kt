@@ -6,9 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-
+@Database(entities = [Medicina::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class MedicinexDB : RoomDatabase()
 {
+    abstract fun medicineDao() : MedicineDAO
+
     companion object
     {// Patrón Singleton aplicado.
         @Volatile

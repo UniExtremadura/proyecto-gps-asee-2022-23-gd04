@@ -18,6 +18,10 @@ class MainMenu : Fragment()
     {
         _binding = FragmentMainMenuBinding.inflate(inflater, container, false)
 
+        binding.openSettings.setOnClickListener{
+            (activity as Menu).openSettings()
+        }
+
         return binding.root
     }
 }

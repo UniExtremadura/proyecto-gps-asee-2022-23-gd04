@@ -60,7 +60,7 @@
     <string name="clean_account">Limpiar cuenta</string>
     <string name="user_auto_login_prefs">Puedes guardar tus credenciales actuales para hacer un auto login activando la palanca.</string>
     <string name="auto_login">Auto login</string>
-    <string name="delete_account_text_A">Eliminar tu cuenta supone perder toda la información sobre tu botiquín y el acceso a Medicinez con la cuenta actual.</string>
+    <string name="delete_account_text_A">Eliminar tu cuenta supone perder toda la información sobre tu botiquín y el acceso a Medicinex con la cuenta actual.</string>
     <string name="delete_account_text_B">Para poder proceder con la eliminación de tus datos, inserta tu contraseña:</string>
     <string name="delete_account">Eliminar cuenta</string>
     <string name="delete_user_title">Eliminar cuenta</string>
