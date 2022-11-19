@@ -24,6 +24,37 @@ class Login : AppCompatActivity()
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val hasLoggedOut = intent.getBooleanExtra("logged_out", false)
+
+        if(MedicinexApp.preferences.getAutoFill() && !hasLoggedOut)
+        {
+            val autoEmail = MedicinexApp.preferences.getEmail()
+            val autoPassword = MedicinexApp.preferences.getPassword()
+
+            try
+            {
+                if(GeneralUtilities.isThereInternet(this))
+                {
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(autoEmail, autoPassword).addOnCompleteListener {
+
+                        if (it.isSuccessful)
+                        {
+                            goMainMenu(autoEmail, autoPassword)
+                        }
+                        else
+                        {
+                            ScreenMessages.incorrectCredentials(this)
+                        }
+                    }
+                }
+                else
+                {
+                    ScreenMessages.noInternetConnection(this)
+                }
+            }
+            catch (e : Exception){/**/}
+        }
     }
 
     fun showHidePassword(view : View)
