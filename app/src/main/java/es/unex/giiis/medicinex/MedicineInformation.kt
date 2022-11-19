@@ -63,7 +63,9 @@ class MedicineInformation(private var medicina : Medicina) : Fragment()
             }
         }
 
-
+        binding.addToFAK.setOnClickListener {
+            addMedicineToAFK()
+        }
 
         return binding.root
     }
@@ -77,5 +79,36 @@ class MedicineInformation(private var medicina : Medicina) : Fragment()
 
         } catch (e: Exception) {/**/}
 
+    }
+
+    private fun addMedicineToAFK()
+    {
+        var exists = false
+        try
+        {
+            if (GeneralUtilities.isThereInternet(requireActivity()))
+            {
+                val database = Firebase.database
+
+                val fakRef = database.getReference("accounts/" + GeneralUtilities.getAccountNameByMail(FirebaseAuth.getInstance().currentUser?.email.toString()) + "/firstAidKit")
+
+                fakRef.get().addOnSuccessListener {
+
+                    for(child in it.children)
+                    {
+                        if(child.value == medicina.nombre) { exists = true; break; }
+                    }
+                    if(!exists)
+                    {
+                        fakRef.push().setValue(medicina.nombre)
+                        Toast.makeText(requireActivity(), R.string.medicine_added_to_afk, Toast.LENGTH_SHORT).show()
+                    }
+                    else
+                    {
+                        Toast.makeText(requireActivity(), R.string.medicine_already_exists_in_afk, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }catch(e : Exception) {/**/}
     }
 }
