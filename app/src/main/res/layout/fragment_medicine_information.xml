@@ -265,6 +265,24 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fastData"
             app:layout_constraintTop_toBottomOf="@+id/identifiersRectangle"
+            app:layout_constraintEnd_toStartOf="@id/addToFAK"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/addToFAK"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/button_outline"
+            android:contentDescription="@string/add_to_afk"
+            android:padding="2dp"
+            android:src="@drawable/add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.962"
+            app:layout_constraintStart_toEndOf="@+id/searchOnWeb"
+            app:layout_constraintTop_toBottomOf="@+id/identifiersRectangle"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
