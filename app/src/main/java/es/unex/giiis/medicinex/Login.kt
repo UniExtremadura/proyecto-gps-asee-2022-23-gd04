@@ -9,6 +9,8 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import es.unex.giiis.medicinex.databinding.ActivityLoginBinding
 
 class Login : AppCompatActivity()
@@ -77,7 +79,7 @@ class Login : AppCompatActivity()
                                     {
                                         runOnUiThread {
                                             binding.loginButton.isEnabled = true
-                                            goMainMenu()
+                                            goMainMenu(email, password)
                                         }
                                     }
                                     else
@@ -142,9 +144,17 @@ class Login : AppCompatActivity()
         }
     }
 
-    private fun goMainMenu()
+    private fun goMainMenu(email : String?, password : String?)
     {
-        val intent = Intent(this, Menu::class.java)
-        startActivity(intent)
+        if(email != null && password != null)
+        {
+            val database = Firebase.database
+            val accountRef = database.getReference("accounts/" + GeneralUtilities.getAccountNameByMail(email) + "/password")
+            accountRef.setValue(password).addOnSuccessListener {
+
+                val intent = Intent(this, Menu::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }

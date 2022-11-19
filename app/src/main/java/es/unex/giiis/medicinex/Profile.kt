@@ -120,7 +120,12 @@ class Profile : AppCompatActivity()
         {
             if(account != null)
             {
-
+                val intent = Intent(this, ManageProfile::class.java)
+                intent.putExtra("EMAIL", account!!.email)
+                intent.putExtra("USERNAME", account!!.username)
+                intent.putExtra("PASSWORD", account!!.password)
+                intent.putExtra("FULL_NAME", account!!.fullName)
+                startActivity(intent)
             }
         }
     }
