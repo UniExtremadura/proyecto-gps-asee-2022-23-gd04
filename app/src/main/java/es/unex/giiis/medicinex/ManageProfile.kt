@@ -25,6 +25,24 @@ class ManageProfile : AppCompatActivity()
         binding = ActivityManageProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         retrieveAccount()
+
+        if(MedicinexApp.preferences.getAutoFill())
+        {
+            binding.autoLogin.isChecked = true
+        }
+
+        binding.autoLogin.setOnCheckedChangeListener { _, b ->
+            if(b)
+            {
+                MedicinexApp.preferences.setAutoFill(true)
+                MedicinexApp.preferences.setEmail(account.email)
+                MedicinexApp.preferences.setPassword(account.password)
+            }
+            else
+            {
+                MedicinexApp.preferences.setAutoFill(false)
+            }
+        }
     }
 
     private fun retrieveAccount()
@@ -110,6 +128,8 @@ class ManageProfile : AppCompatActivity()
                                 }.addOnSuccessListener {
                                     FirebaseAuth.getInstance().currentUser?.delete()
                                     val intent = Intent(this, Login::class.java)
+                                    MedicinexApp.preferences.clear()
+                                    intent.putExtra("logged_out", true)
                                     startActivity(intent)
                                     finish()
                                 }
