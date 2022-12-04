@@ -3,7 +3,7 @@ package es.unex.giiis.medicinex
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
-//@HiltAndroidApp
+@HiltAndroidApp
 class MedicinexApp : Application()
 {
     companion object

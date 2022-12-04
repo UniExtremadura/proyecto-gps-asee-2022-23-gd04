@@ -21,10 +21,13 @@ interface MedicineDAO
     suspend fun buscarPorNombre(nombre: String): MutableList<MedicinaEntity>?
 
     @Query("SELECT * FROM medicines WHERE nRegistro = :nregistro LIMIT 1")
-    suspend fun buscarPorNRegistro(nregistro : String) : MedicinaEntity
+    suspend fun buscarPorNRegistro(nregistro : String) : MedicinaEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(medicine: MedicinaEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(medicines: MutableList<MedicinaEntity>)
 
     /*@Delete
     suspend fun delete(medicine: Medicina)*/

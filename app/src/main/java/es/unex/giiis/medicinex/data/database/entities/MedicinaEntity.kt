@@ -3,6 +3,7 @@ package es.unex.giiis.medicinex.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import es.unex.giiis.medicinex.data.model.MedicineModel
 
 @Entity(tableName = "medicines")
 data class MedicinaEntity
@@ -27,3 +28,7 @@ data class MedicinaEntity
     @ColumnInfo(name = "cluster") var cluster : String?, // Categoría del medicamento.
     @ColumnInfo(name = "seccion") var seccion : Char?, // Letra de la sección a la que pertenece el medicamento (coincide con la primera letra del nombre del medicamento).
 )
+
+fun MedicinaEntity.toModel() = MedicineModel(nRegistro = nRegistro, nombre = nombre, labTitular = labTitular, cPresc = cPresc, comerc = comerc, receta = receta,
+    conduc = conduc, ema = ema, dosis = dosis, docs = docs, fotos = fotos, pActivos = pActivos, excipientes = excipientes, vAdministracion = vAdministracion,
+    presentaciones = presentaciones, formaFarma = formaFarma, formaFarmaSimpli = formaFarmaSimpli, cluster = cluster, seccion = seccion)

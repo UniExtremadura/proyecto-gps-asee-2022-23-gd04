@@ -51,7 +51,7 @@ class MedicineInfo : AppCompatActivity()
 
             withContext(Dispatchers.IO)
             {
-                medicamento = db.medicineDao().buscarPorNRegistro(nregistro!!)
+                medicamento = db.medicineDao().buscarPorNRegistro(nregistro!!)!!
             }
 
             withContext(Dispatchers.Main)

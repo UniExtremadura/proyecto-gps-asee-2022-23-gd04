@@ -4,10 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.CatalogueProvider
 import es.unex.giiis.medicinex.view.adapter.SectionAdapter
 import es.unex.giiis.medicinex.databinding.ActivityCatalogueBinding
 
+@AndroidEntryPoint
 class Catalogue : AppCompatActivity()
 {
     private lateinit var binding : ActivityCatalogueBinding
