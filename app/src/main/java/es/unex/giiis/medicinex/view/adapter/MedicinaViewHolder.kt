@@ -13,7 +13,7 @@ class MedicinaViewHolder(view : View) : ViewHolder(view)
     fun render(medicinaEntity : MedicinaEntity, onClickListener:(MedicinaEntity) -> Unit)
     {// Se mostrará el nombre del medicamento y los datos rápidos en función de sus atributos.
         binding.txtMedicinaName.text = medicinaEntity.nombre
-        if(medicinaEntity.conduc == true)
+        if(medicinaEntity.conduc == false)
         {
             binding.ivConduc.setImageResource(R.drawable.save_driving)
         }

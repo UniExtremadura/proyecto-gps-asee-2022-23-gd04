@@ -46,14 +46,14 @@ class RecoverAccount : AppCompatActivity()
                             if(task.isSuccessful)
                             {
                                 runOnUiThread {
-                                    ScreenMessages.resetEmailSent(this)
+                                    ScreenMessages.showDialog(this, R.string.reset_password_title, R.string.reset_password_message)
                                     binding.recoverButton.isEnabled = true
                                 }
                             }
                             else
                             {
                                 runOnUiThread {
-                                    ScreenMessages.resetEmailSentError(this)
+                                    ScreenMessages.showDialog(this, R.string.reset_password_error_title, R.string.reset_password_error_message)
                                     binding.recoverButton.isEnabled = true
                                 }
                             }

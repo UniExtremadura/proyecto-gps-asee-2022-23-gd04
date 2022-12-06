@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import es.unex.giiis.medicinex.MedicinexApp
+import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.view.adapter.ItemFAKAdapter
 import es.unex.giiis.medicinex.data.database.MedicinexDB
 import es.unex.giiis.medicinex.databinding.FragmentFirstAidKitBinding
@@ -75,7 +76,7 @@ class FirstAidKitFragment : Fragment()
         }
         else
         {
-            ScreenMessages.noInternetConnection(requireActivity())
+            ScreenMessages.showDialog(requireActivity(), R.string.no_internet, R.string.no_internet_message)
         }
     }
 

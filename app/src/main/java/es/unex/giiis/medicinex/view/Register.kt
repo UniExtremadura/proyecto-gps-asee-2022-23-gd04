@@ -42,7 +42,7 @@ class Register : AppCompatActivity()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     runOnUiThread {
-                        ScreenMessages.accountCreatedSuccessfully(this)
+                        ScreenMessages.showDialog(this, R.string.account_created_title, R.string.account_created_message)
                         binding.emailField.setText("")
                         binding.userField.setText("")
                         binding.passwordField.setText("")
@@ -55,7 +55,7 @@ class Register : AppCompatActivity()
                     }
                 } else {
                     runOnUiThread {
-                        ScreenMessages.accountAlreadyExists(this)
+                        ScreenMessages.showDialog(this, R.string.account_already_exists_title, R.string.account_already_exists_message)
                         binding.emailField.setText("")
                         binding.registerButton.isEnabled = true
                     }
@@ -85,7 +85,7 @@ class Register : AppCompatActivity()
                     } else
                     {
                         runOnUiThread {
-                            ScreenMessages.accountInvalidCredentials(this)
+                            ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.account_invalid_message)
                             binding.registerButton.isEnabled = true
                         }
                     }

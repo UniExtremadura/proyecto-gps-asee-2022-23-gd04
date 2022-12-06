@@ -84,7 +84,7 @@ class ManageProfile : AppCompatActivity()
                         Firebase.database.getReference(path + "/${cure.key}").removeValue()
                     }
                 }
-                ScreenMessages.firstAidKitCleaned(this)
+                ScreenMessages.showDialog(this, R.string.first_aid_kit_cleaned_title, R.string.first_aid_kit_cleaned_message)
             }
         }
     }
@@ -130,7 +130,7 @@ class ManageProfile : AppCompatActivity()
                                         account.email
                                     )
                                 ).removeValue().addOnFailureListener {
-                                    ScreenMessages.accountDeleteFailure(this)
+                                    ScreenMessages.showDialog(this, R.string.account_updated_failed_title, R.string.account_updated_failed_message)
                                 }.addOnSuccessListener {
                                     FirebaseAuth.getInstance().currentUser?.delete()
                                     val intent = Intent(this, Login::class.java)

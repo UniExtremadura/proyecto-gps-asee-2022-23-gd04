@@ -69,7 +69,7 @@ class EditProfile : AppCompatActivity()
                     } else
                     {
                         runOnUiThread {
-                            ScreenMessages.accountInvalidCredentials(this)
+                            ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.account_invalid_message)
                             binding.updateButton.isEnabled = true
                         }
                     }
@@ -91,14 +91,14 @@ class EditProfile : AppCompatActivity()
                     accountRef.child("fullName").setValue(account.fullName) // Firebase realtime account fullName update.
                     accountRef.child("password").setValue(account.password) // Firebase realtime account password update.
                     accountRef.child("username").setValue(account.username) // Firebase realtime account username update.
-                    ScreenMessages.accountUpdatedSuccessfully(this)
+                    ScreenMessages.showDialog(this, R.string.account_updated_successfully_title, R.string.account_updated_successfully_message)
                     binding.updateButton.isEnabled = true
                 }
             }
             else
             {
                 runOnUiThread{
-                    ScreenMessages.accountUpdateFailed(this)
+                    ScreenMessages.showDialog(this, R.string.account_updated_failed_title, R.string.account_updated_failed_message)
                     binding.updateButton.isEnabled = true
                 }
             }

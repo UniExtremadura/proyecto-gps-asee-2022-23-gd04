@@ -1,28 +1,19 @@
 package es.unex.giiis.medicinex.data.network
 
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import es.unex.giiis.medicinex.Account
 import es.unex.giiis.medicinex.CatalogueProvider
 import es.unex.giiis.medicinex.MedicinexApp
-import es.unex.giiis.medicinex.R
-import es.unex.giiis.medicinex.data.database.entities.CategorieEntity
-import es.unex.giiis.medicinex.data.database.entities.MedicinaEntity
 import es.unex.giiis.medicinex.data.database.entities.toModel
 import es.unex.giiis.medicinex.data.model.MedicineModel
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
-import es.unex.giiis.medicinex.utilities.ScreenMessages
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class MedicineFBService
-(
-    private val auth : FirebaseAuth,
-    private val realtime : FirebaseDatabase
-) : MedicineFirebaseClient
+class MedicineFBService(private val realtime : FirebaseDatabase) : MedicineFirebaseClient, AccountsFirebaseClient
 {
     override suspend fun getCategorieMedicines(categorie : String) : MutableList<MedicineModel>
     {
@@ -32,8 +23,6 @@ class MedicineFBService
         {
             withContext(Dispatchers.Main)
             {
-                //Toast.makeText(binding.sectionName.context, R.string.downloading_data_please_wait, Toast.LENGTH_SHORT).show()
-
                 val categoria = Firebase.database.getReference(categorie).get().await()
 
                 for(letra in categoria.children)
@@ -80,11 +69,6 @@ class MedicineFBService
             {
                 val secciones = CatalogueProvider.categories
 
-                withContext(Dispatchers.Main)
-                {
-                    //Toast.makeText(requireActivity(), R.string.searching, Toast.LENGTH_LONG).show()
-                }
-
                 for (section in secciones)
                 {
                     if (MedicinexApp.isThereInternet)
@@ -121,8 +105,63 @@ class MedicineFBService
     {
         var medicine : MedicineModel? = null
 
+        var letter : Char = name[0]
 
+        if(MedicinexApp.isThereInternet)
+        {
+            val secciones = CatalogueProvider.categories
+            var found = false
+
+            for (section in secciones)
+            {
+                if (MedicinexApp.isThereInternet)
+                {
+                    val secc = realtime.getReference("$section/$letter").get().await()
+
+                    if (secc != null)
+                    {
+                        for (medicamento in secc.children)
+                        {
+                            for(child in medicamento.children)
+                            {
+                                when (child.key)
+                                {
+                                    "Nombre" -> {
+                                        if ((child.value as String) == name)
+                                        {
+                                            medicine = GeneralUtilities.parseMedicine(medicamento).toModel()
+                                            found = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if(found) break
+                }
+                else
+                {
+                    break
+                }
+            }
+        }
 
         return medicine
+    }
+
+    override suspend fun editAccount(account : Account)
+    {
+        var userRef = realtime.getReference("accounts/" + account.email.substring(0, account.email.indexOf('@')))
+
+        userRef.child("fullName").setValue(account.fullName) // Firebase realtime account fullName update.
+        userRef.child("password").setValue(account.password) // Firebase realtime account password update.
+        userRef.child("username").setValue(account.username) // Firebase realtime account username update.
+    }
+
+    override suspend fun registerAccount(account : Account)
+    {
+        val accountsRef = realtime.getReference("accounts")
+        accountsRef.child(account.email.substring(0, account.email.indexOf('@'))).setValue(account)
     }
 }

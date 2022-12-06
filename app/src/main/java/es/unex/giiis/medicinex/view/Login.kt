@@ -40,7 +40,7 @@ class Login : AppCompatActivity()
 
             try
             {
-                if(GeneralUtilities.isThereInternet(this))
+                if(MedicinexApp.isThereInternet)
                 {
                     FirebaseAuth.getInstance().signInWithEmailAndPassword(autoEmail, autoPassword).addOnCompleteListener {
 
@@ -50,13 +50,9 @@ class Login : AppCompatActivity()
                         }
                         else
                         {
-                            ScreenMessages.incorrectCredentials(this)
+                            ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.incorrect_credentials_message)
                         }
                     }
-                }
-                else
-                {
-                    ScreenMessages.noInternetConnection(this)
                 }
             }
             catch (e : Exception){/**/}
@@ -89,7 +85,7 @@ class Login : AppCompatActivity()
         {
             view.isEnabled = false
             AppExecutors.instance?.networkIO()?.execute {
-                if(GeneralUtilities.isThereInternet(this))
+                if(MedicinexApp.isThereInternet)
                 {
                     val email = binding.usermail.text.toString()
                     val password = binding.password.text.toString()
@@ -122,7 +118,7 @@ class Login : AppCompatActivity()
                                     else
                                     {
                                         runOnUiThread{
-                                            ScreenMessages.incorrectCredentials(this)
+                                            ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.incorrect_credentials_message)
                                             binding.loginButton.isEnabled = true
                                         }
                                     }
@@ -132,21 +128,21 @@ class Login : AppCompatActivity()
                         else if(!emailOk && !passwordOk)
                         {// Los dos están mal formados
                             runOnUiThread {
-                                ScreenMessages.invalidMailPassword(this)
+                                ScreenMessages.showDialog(this, R.string.invalid_mail_password_title, R.string.invalid_mail_password_message)
                                 binding.loginButton.isEnabled = true
                             }
                         }
                         else if(emailOk)
                         {// El email está bien pero la contraseña no
                             runOnUiThread {
-                                ScreenMessages.invalidPassword(this)
+                                ScreenMessages.showDialog(this, R.string.invalid_password_title, R.string.invalid_password_message)
                                 binding.loginButton.isEnabled = true
                             }
                         }
                         else
                         {// El email está mal pero la contraseña no
                             runOnUiThread {
-                                ScreenMessages.invalidMailAddress(this)
+                                ScreenMessages.showDialog(this, R.string.invalid_mail_title, R.string.invalid_mail_message)
                                 binding.loginButton.isEnabled = true
                             }
                         }
@@ -155,7 +151,6 @@ class Login : AppCompatActivity()
                 else
                 {
                     runOnUiThread {
-                        ScreenMessages.noInternetConnection(this)
                         binding.loginButton.isEnabled = true
                     }
                 }

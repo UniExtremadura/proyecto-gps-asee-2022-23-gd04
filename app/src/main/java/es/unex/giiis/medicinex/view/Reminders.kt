@@ -47,7 +47,7 @@ class Reminders : Fragment()
         }
         else
         {
-            ScreenMessages.noInternetConnection(requireActivity())
+            ScreenMessages.showDialog(requireActivity(), R.string.no_internet, R.string.no_internet_message)
         }
 
 

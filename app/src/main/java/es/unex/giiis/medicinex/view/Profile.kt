@@ -69,7 +69,7 @@ class Profile : AppCompatActivity()
             }
         } else
         {
-            ScreenMessages.noInternetConnection(this)
+            ScreenMessages.showDialog(this, R.string.no_internet, R.string.no_internet_message)
         }
     }
 

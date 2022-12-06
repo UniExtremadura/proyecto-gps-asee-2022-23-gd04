@@ -1,10 +1,10 @@
 package es.unex.giiis.medicinex.data.network
 
+import es.unex.giiis.medicinex.Account
+
 interface AccountsFirebaseClient
 {
-    suspend fun signInWithMailAndPassowrd()
+    suspend fun editAccount(account : Account)
 
-    suspend fun resetAccountPassword()
-
-    suspend fun logOut()
+    suspend fun registerAccount(account : Account)
 }
