@@ -4,16 +4,17 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.data.database.entities.MedicinaEntity
+import es.unex.giiis.medicinex.data.model.MedicineModel
 import es.unex.giiis.medicinex.databinding.ItemMedicinaBinding
 
 class MedicinaViewHolder(view : View) : ViewHolder(view)
 {
     val binding = ItemMedicinaBinding.bind(view)
 
-    fun render(medicinaEntity : MedicinaEntity, onClickListener:(MedicinaEntity) -> Unit)
+    fun render(medicinaModel : MedicineModel, onClickListener:(MedicineModel) -> Unit)
     {// Se mostrará el nombre del medicamento y los datos rápidos en función de sus atributos.
-        binding.txtMedicinaName.text = medicinaEntity.nombre
-        if(medicinaEntity.conduc == false)
+        binding.txtMedicinaName.text = medicinaModel.nombre
+        if(medicinaModel.conduc == false)
         {
             binding.ivConduc.setImageResource(R.drawable.save_driving)
         }
@@ -22,7 +23,7 @@ class MedicinaViewHolder(view : View) : ViewHolder(view)
             binding.ivConduc.setImageResource(R.drawable.unsafe_driving)
         }
 
-        if(medicinaEntity.comerc == true)
+        if(medicinaModel.comerc == true)
         {
             binding.ivBuy.setImageResource(R.drawable.merchantable)
         }
@@ -31,7 +32,7 @@ class MedicinaViewHolder(view : View) : ViewHolder(view)
             binding.ivBuy.setImageResource(R.drawable.not_merchantable)
         }
 
-        if(medicinaEntity.receta == true)
+        if(medicinaModel.receta == true)
         {
             binding.ivReceipt.setImageResource(R.drawable.prescription)
         }
@@ -41,7 +42,7 @@ class MedicinaViewHolder(view : View) : ViewHolder(view)
         }
 
         itemView.setOnClickListener{
-            onClickListener(medicinaEntity) // Listener accionado tras la pulsación del elemento medicina en la IU.
+            onClickListener(medicinaModel) // Listener accionado tras la pulsación del elemento medicina en la IU.
         }
     }
 }

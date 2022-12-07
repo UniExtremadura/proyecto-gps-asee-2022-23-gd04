@@ -7,10 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.databinding.ActivityMenuBinding
 import es.unex.giiis.medicinex.utilities.NetworkChangeListener
 
+@AndroidEntryPoint
 class Menu : AppCompatActivity()
 {
     private lateinit var binding: ActivityMenuBinding

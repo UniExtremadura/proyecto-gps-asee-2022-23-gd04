@@ -6,20 +6,27 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.*
 import es.unex.giiis.medicinex.databinding.ActivityProfileBinding
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
 import es.unex.giiis.medicinex.utilities.ScreenMessages
+import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
+@AndroidEntryPoint
 class Profile : AppCompatActivity()
 {
     private lateinit var binding : ActivityProfileBinding
     private var passwordVisible : Boolean = false
     private var account : Account? = null
+    private val medicineViewModel : MedicineViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -27,46 +34,27 @@ class Profile : AppCompatActivity()
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        medicineViewModel.account.observe(this, Observer{
+            account = it
+            binding.nombreValue.text = account!!.fullName
+            binding.passwordValue.setText(account!!.password)
+            binding.emailValue.text = account!!.email
+            binding.usuarioValue.text = account!!.username
+        })
+
         fillData()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-
+    override fun onStart() {
+        super.onStart()
         fillData()
     }
 
     private fun fillData()
     {
-        if (GeneralUtilities.isThereInternet(this))
+        if (MedicinexApp.isThereInternet)
         {
-            val ac = Account("", "", "", "")
-            val database = Firebase.database
-
-            val accountRef = database.getReference("accounts/" + GeneralUtilities.getAccountNameByMail(FirebaseAuth.getInstance().currentUser?.email.toString()))
-
-            accountRef.get().addOnSuccessListener {
-
-                for(child in it.children)
-                {
-                    when(child.key)
-                    {
-                        "email" -> ac.email = child.value as String
-                        "fullName" -> ac.fullName = child.value as String
-                        "password" -> ac.password = child.value as String
-                        "username" -> ac.username = child.value as String
-                        "firstAidKit" -> { }
-                        else -> { }
-                    }
-                }
-                account = ac
-
-                binding.nombreValue.text = account!!.fullName
-                binding.passwordValue.setText(account!!.password)
-                binding.emailValue.text = account!!.email
-                binding.usuarioValue.text = account!!.username
-
-            }
+            medicineViewModel.getAccount()
         } else
         {
             ScreenMessages.showDialog(this, R.string.no_internet, R.string.no_internet_message)
@@ -137,7 +125,7 @@ class Profile : AppCompatActivity()
     {
         if(view.isEnabled)
         {
-            if(GeneralUtilities.isThereInternet(this))
+            if(MedicinexApp.isThereInternet)
             {
                 val builder = AlertDialog.Builder(this)
 
@@ -146,7 +134,7 @@ class Profile : AppCompatActivity()
 
                         try
                         {
-                            FirebaseAuth.getInstance().signOut()
+                            medicineViewModel.logOut()
                             val intent = Intent(this, Login::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             intent.putExtra("logged_out", true)

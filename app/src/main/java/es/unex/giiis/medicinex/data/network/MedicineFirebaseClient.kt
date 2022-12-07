@@ -1,5 +1,6 @@
 package es.unex.giiis.medicinex.data.network
 
+import es.unex.giiis.medicinex.Account
 import es.unex.giiis.medicinex.data.model.MedicineModel
 
 interface MedicineFirebaseClient
@@ -11,4 +12,10 @@ interface MedicineFirebaseClient
     suspend fun getMedicinesByLetter(letter : Char) : MutableList<MedicineModel>
 
     suspend fun getMedicineByName(name : String) : MedicineModel?
+
+    suspend fun getFakMedicines() : MutableList<String>
+
+    suspend fun deleteMedicineFromFak(name : String) : Boolean
+
+    suspend fun getAccount() : Account
 }

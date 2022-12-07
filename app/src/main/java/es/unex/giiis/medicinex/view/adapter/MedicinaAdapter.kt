@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.data.database.entities.MedicinaEntity
+import es.unex.giiis.medicinex.data.model.MedicineModel
 
-class MedicinaAdapter(private var medicinaEntities : List<MedicinaEntity>, private val onClickListener:(MedicinaEntity) -> Unit) : RecyclerView.Adapter<MedicinaViewHolder>()
+class MedicinaAdapter(private var medicinaEntities : List<MedicineModel>, private val onClickListener:(MedicineModel) -> Unit) : RecyclerView.Adapter<MedicinaViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicinaViewHolder
     {
@@ -26,7 +27,7 @@ class MedicinaAdapter(private var medicinaEntities : List<MedicinaEntity>, priva
     override fun getItemCount() : Int = medicinaEntities.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateMedicines(medicinaEntities : List<MedicinaEntity>)
+    fun updateMedicines(medicinaEntities : List<MedicineModel>)
     {// Actualización en el adaptador (empleado para los filtrados del recycler view del menú principal - búsqueda -).
         this.medicinaEntities = medicinaEntities
         notifyDataSetChanged()

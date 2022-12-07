@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.view.Section"
+            android:name=".view.Section"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -49,7 +49,7 @@
             android:enabled="true" />
 
         <activity
-            android:name=".ui.view.MedicineInfo"
+            android:name=".view.MedicineInfo"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -58,7 +58,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.ManageProfile"
+            android:name=".view.ManageProfile"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -67,7 +67,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.EditProfile"
+            android:name=".view.EditProfile"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -76,7 +76,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.Profile"
+            android:name=".view.Profile"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -85,7 +85,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.RecoverAccount"
+            android:name=".view.RecoverAccount"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -94,7 +94,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.Register"
+            android:name=".view.Register"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -103,7 +103,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.Menu"
+            android:name=".view.Menu"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -112,7 +112,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.Login"
+            android:name=".view.Login"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"

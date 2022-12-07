@@ -118,3 +118,7 @@ data class MedicineModel
         return medicineText
     }
 }
+
+fun MedicineModel.toEntity() = MedicinaEntity(nRegistro = nRegistro, nombre = nombre, labTitular = labTitular, cPresc = cPresc, comerc = comerc, receta = receta,
+    conduc = conduc, ema = ema, dosis = dosis, docs = docs, fotos = fotos, pActivos = pActivos, excipientes = excipientes, vAdministracion = vAdministracion,
+    presentaciones = presentaciones, formaFarma = formaFarma, formaFarmaSimpli = formaFarmaSimpli, cluster = cluster, seccion = seccion)

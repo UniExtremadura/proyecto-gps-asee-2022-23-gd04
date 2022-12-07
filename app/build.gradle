@@ -110,4 +110,6 @@ dependencies {
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    implementation "androidx.fragment:fragment-ktx:1.5.2"
 }

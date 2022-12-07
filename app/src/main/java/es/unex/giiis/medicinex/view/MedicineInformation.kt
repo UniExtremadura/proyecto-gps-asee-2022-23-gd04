@@ -18,11 +18,14 @@ import android.content.Context
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
+import es.unex.giiis.medicinex.MedicinexApp
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
 import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MedicineInformation(private var medicinaEntity : MedicinaEntity) : Fragment()
 {
     private lateinit var binding : FragmentMedicineInformationBinding
@@ -57,8 +60,13 @@ class MedicineInformation(private var medicinaEntity : MedicinaEntity) : Fragmen
         }catch (e : Exception){/**/}
 
 
-        medicineViewModel.medicineModel.observe(requireActivity(), Observer {
-            //binding.dosis.text = it.dosis
+        medicineViewModel.saveMedicineResult.observe(requireActivity(), Observer {
+            when(it)
+            {
+                true -> { Toast.makeText(requireActivity(), R.string.medicine_added_to_afk, Toast.LENGTH_SHORT).show() }
+
+                false -> { Toast.makeText(requireActivity(),R.string.medicine_already_exists_in_afk, Toast.LENGTH_SHORT).show() }
+            }
         })
 
         binding.downloadPdf.setOnClickListener {
@@ -131,32 +139,11 @@ class MedicineInformation(private var medicinaEntity : MedicinaEntity) : Fragmen
 
     private fun addMedicineToAFK()
     {
-        var exists = false
         try
         {
-            if (GeneralUtilities.isThereInternet(requireActivity()))
+            if (MedicinexApp.isThereInternet && medicinaEntity.nombre != null)
             {
-                val database = Firebase.database
-
-                val fakRef = database.getReference("accounts/" + GeneralUtilities.getAccountNameByMail(FirebaseAuth.getInstance().currentUser?.email.toString()) + "/firstAidKit")
-
-                fakRef.get().addOnSuccessListener {
-
-                    for(child in it.children)
-                    {
-                        if(child.value == medicinaEntity.nombre) { exists = true; break; }
-                    }
-                    if(!exists)
-                    {
-                        fakRef.push().setValue(medicinaEntity.nombre)
-                        Toast.makeText(requireActivity(), R.string.medicine_added_to_afk, Toast.LENGTH_SHORT).show()
-                    }
-                    else
-                    {
-                        Toast.makeText(requireActivity(),
-                            R.string.medicine_already_exists_in_afk, Toast.LENGTH_SHORT).show()
-                    }
-                }
+               medicineViewModel.saveMedicineAfk(medicinaEntity.nombre!!)
             }
         }catch(e : Exception) {/**/}
     }

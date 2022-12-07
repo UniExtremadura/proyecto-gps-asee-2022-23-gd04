@@ -10,8 +10,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.content.Intent
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.FragmentAdapter
+import es.unex.giiis.medicinex.data.model.toEntity
+import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
+@AndroidEntryPoint
 class MedicineInfo : AppCompatActivity()
 {
     companion object
@@ -22,8 +28,7 @@ class MedicineInfo : AppCompatActivity()
     private var nregistro: String? = null
     private lateinit var binding : ActivityMedicineInfoBinding
     private lateinit var medicamento : MedicinaEntity
-    private lateinit var db : MedicinexDB
-
+    private val medicineViewModel : MedicineViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -32,7 +37,9 @@ class MedicineInfo : AppCompatActivity()
         setContentView(binding.root)
 
         nregistro = intent.getStringExtra(N_REGISTRO)
-        db = MedicinexDB.getDatabase(this)
+
+        val viewPager = binding.viewPager
+        val tablayout = binding.tablayout
 
         binding.closeButtonImage.setOnClickListener {
             closeAction()
@@ -42,20 +49,13 @@ class MedicineInfo : AppCompatActivity()
             shareMedicine()
         }
 
-        val viewPager = binding.viewPager
-        val tablayout = binding.tablayout
+        medicineViewModel.viewMedicineData(nregistro!!)
 
+        medicineViewModel.medicineModel.observe(this, Observer{
 
-        lifecycleScope.launch(Dispatchers.Main)
-        {
-
-            withContext(Dispatchers.IO)
+            if(it != null)
             {
-                medicamento = db.medicineDao().buscarPorNRegistro(nregistro!!)!!
-            }
-
-            withContext(Dispatchers.Main)
-            {
+                medicamento = it.toEntity()
 
                 binding.medicineName.text = medicamento.nombre
                 val fragmentAdapter = FragmentAdapter(supportFragmentManager)
@@ -66,7 +66,7 @@ class MedicineInfo : AppCompatActivity()
                 viewPager.adapter = fragmentAdapter
                 tablayout.setupWithViewPager(viewPager)
             }
-        }
+        })
     }
 
     private fun closeAction()

@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.CatalogueProvider
 import es.unex.giiis.medicinex.MedicinexApp
 import es.unex.giiis.medicinex.R
@@ -18,27 +22,29 @@ import es.unex.giiis.medicinex.view.adapter.MedicinaAdapter
 import es.unex.giiis.medicinex.data.database.entities.LetterEntity
 import es.unex.giiis.medicinex.data.database.entities.MedicinaEntity
 import es.unex.giiis.medicinex.data.database.MedicinexDB
+import es.unex.giiis.medicinex.data.model.MedicineModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import es.unex.giiis.medicinex.databinding.FragmentMainMenuBinding
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
 import es.unex.giiis.medicinex.utilities.ScreenMessages
+import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
+@AndroidEntryPoint
 class MainMenu : Fragment()
 {
     private lateinit var _binding : FragmentMainMenuBinding
     private val binding get() = _binding
     private lateinit var adapter : MedicinaAdapter
-    private var results : MutableList<MedicinaEntity> = mutableListOf()
-    private var filteredResults : MutableList<MedicinaEntity> = mutableListOf()
-    private lateinit var db : MedicinexDB
+    private var results : MutableList<MedicineModel> = mutableListOf()
+    private var filteredResults : MutableList<MedicineModel> = mutableListOf()
     private lateinit var med: MedicinaEntity
+
+    private val medicineViewModel : MedicineViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
         _binding = FragmentMainMenuBinding.inflate(inflater, container, false)
-
-        db = MedicinexDB.getDatabase(activity)
 
         binding.checkBoxReceipt.isVisible = false
         val recyclerView = binding.medicineRv
@@ -51,131 +57,60 @@ class MainMenu : Fragment()
         }
         recyclerView.adapter = adapter
 
-
         binding.checkBoxReceipt.setOnClickListener {
-
             checkForFilter()
         }
+
+        medicineViewModel.medicinesSearched.observe(requireActivity(), Observer{
+
+            for(med in it)
+            {
+                if(!results.contains(med))
+                {
+                    results.add(med)
+                    addItemToRV(med)
+                }
+            }
+
+           if (results.size == 0) { Toast.makeText(requireActivity(), R.string.no_results_found, Toast.LENGTH_SHORT).show() }
+
+        })
 
         binding.searchButton.setOnClickListener {
             if(binding.searchButton.isEnabled)
             {
                 if(binding.queryText.text.isNotEmpty())
                 {
-                    val letra : Char = binding.queryText.text.toString().first().uppercaseChar()
+                    val letra: Char = binding.queryText.text.toString().first().uppercaseChar()
+                    val query: String = binding.queryText.text.toString()
 
-                    val query : String = binding.queryText.text.toString()
-
-                    if(binding.queryText.text.toString().length >= 4 && (letra != ' '))
+                    if (binding.queryText.text.toString().length >= 4 && (letra != ' '))
                     {
                         checkForFilter()
 
                         binding.searchButton.isEnabled = false
                         binding.queryText.isEnabled = false
 
-                        lifecycleScope.launch  {
+                        lifecycleScope.launch {
 
-                            withContext(Dispatchers.Main)
+                            if (MedicinexApp.isThereInternet)
                             {
-                                clearRV()
-                                binding.checkBoxReceipt.isVisible = false
-                                binding.checkBoxReceipt.isChecked = false
-                                adapter.updateMedicines(results)
-                            }
-
-                            val letterEntity : LetterEntity? = db.letterDao().getLetter(letra)
-
-
-                            if(letterEntity != null)
-                            {// Ya existía esa letra
-
-                                val results = db.medicineDao().buscarPorNombre(query)
-
-                                if(results != null)
+                                withContext(Dispatchers.Main)
                                 {
-
-                                    if(results.size > 0)
-                                    {
-                                        for(item in results)
-                                        {
-                                            withContext(Dispatchers.Main)
-                                            {
-                                                addItemToRV(item)
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        withContext(Dispatchers.Main)
-                                        {
-                                            Toast.makeText(requireActivity(),
-                                                R.string.no_results_found, Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
+                                    Toast.makeText(requireActivity(), R.string.searching, Toast.LENGTH_LONG).show()
+                                    clearRV()
+                                    binding.checkBoxReceipt.isVisible = false
+                                    binding.checkBoxReceipt.isChecked = false
+                                    adapter.updateMedicines(results)
                                 }
-                            }
-                            else
-                            {// No existía la letra, por tanto, hay que descargar la letra de Firebase.
-                                // Descargar la letra supone bajarse todos los medicamentos que empiecen por esa letra.
 
-                                var failed = false
-
-                                if(MedicinexApp.isThereInternet)
-                                {
-                                    val secciones = CatalogueProvider.categories
-                                    withContext(Dispatchers.Main)
-                                    {
-                                        Toast.makeText(requireActivity(), R.string.searching, Toast.LENGTH_LONG).show()
-                                    }
-
-                                    for (section in secciones)
-                                    {
-                                        if(MedicinexApp.isThereInternet)
-                                        {
-                                            val secc = Firebase.database.getReference("$section/$letra").get().await()
-
-                                            if (secc != null)
-                                            {
-                                                for (medicamento in secc.children)
-                                                {
-                                                    med = GeneralUtilities.parseMedicine(medicamento)
-                                                    db.medicineDao().insert(med)
-
-                                                    if (med.nombre!!.startsWith(query, true))
-                                                    {
-                                                        withContext(Dispatchers.Main)
-                                                        {
-                                                            addItemToRV(med)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            failed = true
-                                            break
-                                        }
-                                    }
-
-                                    if(!failed)
-                                    {
-                                        db.letterDao().insertLetter(LetterEntity(letra))
-                                    }
-
-                                    if(results.size == 0)
-                                    {
-                                        withContext(Dispatchers.Main)
-                                        {
-                                            Toast.makeText(requireActivity(),
-                                                R.string.no_results_found, Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    ScreenMessages.showDialog(requireActivity(), R.string.no_internet, R.string.no_internet_message)
-                                }
+                                medicineViewModel.searchWithFilter(query)
+                            } else {
+                                ScreenMessages.showDialog(
+                                    requireActivity(),
+                                    R.string.no_internet,
+                                    R.string.no_internet_message
+                                )
                             }
 
                             withContext(Dispatchers.Main)
@@ -185,10 +120,13 @@ class MainMenu : Fragment()
                                 binding.queryText.isEnabled = true
                             }
                         }
-                    }
-                    else
+                    } else
                     {
-                        Toast.makeText(requireActivity(), R.string.insuficient_query_length, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            requireActivity(),
+                            R.string.insuficient_query_length,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
                 else
@@ -213,7 +151,7 @@ class MainMenu : Fragment()
     {
         if (binding.checkBoxReceipt.isChecked)
         {
-            filteredResults = results.filter { medicina -> medicina.receta == false } as MutableList<MedicinaEntity>
+            filteredResults = results.filter { medicina -> medicina.receta == false } as MutableList<MedicineModel>
             adapter.updateMedicines(filteredResults)
         }
         else
@@ -230,14 +168,14 @@ class MainMenu : Fragment()
         adapter.notifyItemRangeRemoved(0, size)
     }
 
-    private fun addItemToRV(medicinaEntity : MedicinaEntity)
+    private fun addItemToRV(medicineModel : MedicineModel)
     {
-        results.add(medicinaEntity)
+        results.add(medicineModel)
         adapter.notifyItemInserted(results.size - 1)
     }
 
-    private fun onItemSelected(medicinaEntity: MedicinaEntity)
+    private fun onItemSelected(medicineModel: MedicineModel)
     {// Aquí irán las acciones que se producirán cuando se pulse sobre el frame de una medicina.
-        (activity as Menu).showMedicineInfo(medicinaEntity.nRegistro)
+        (activity as Menu).showMedicineInfo(medicineModel.nRegistro)
     }
 }

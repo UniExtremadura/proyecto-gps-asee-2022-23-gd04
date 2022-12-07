@@ -74,7 +74,7 @@ class Reminders : Fragment()
 
     internal fun updateUI()
     {
-        if(GeneralUtilities.isThereInternet(requireActivity()))
+        if(MedicinexApp.isThereInternet)
         {
             database = Firebase.database
             fakRef = database.getReference("accounts/" + GeneralUtilities.getAccountNameByMail(

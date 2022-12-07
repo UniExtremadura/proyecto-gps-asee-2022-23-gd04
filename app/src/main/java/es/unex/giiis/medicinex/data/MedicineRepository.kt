@@ -1,5 +1,6 @@
 package es.unex.giiis.medicinex.data
 
+import android.util.Log
 import es.unex.giiis.medicinex.Account
 import es.unex.giiis.medicinex.data.database.dao.CategorieDAO
 import es.unex.giiis.medicinex.data.database.dao.LetterDAO
@@ -29,17 +30,19 @@ class MedicineRepository @Inject constructor
 
     suspend fun getMedicinesByQuery(query : String) : MutableList<MedicineModel>
     {
-        val medicines: MutableList<MedicineModel>
+        var medicines: MutableList<MedicineModel> = mutableListOf()
 
-        val letter = query[0]
+        val letter = query[0].uppercaseChar()
         val letra = letterDao.getLetter(letter)
 
         if(letra != null)
         {// La letra existía, por tanto, todas las medicinas que empiecen por dicha letra están en local.
             medicines = entitiesToModels(medicineDao.buscarPorNombre(query))
+            Log.i("DIOS", "No existía la letra")
         }
         else
         {// La letra no existía, por tanto, hay que descargar todas las medicinas que comiencen por dicha letra de Firebase.
+            Log.i("DIOS", "Existía la letra")
 
             val results = firebase.getMedicinesByLetter(letter)
             medicineDao.insert(results.map { MedicinaEntity(nRegistro = it.nRegistro, nombre = it.nombre, labTitular = it.labTitular, cPresc = it.cPresc, comerc = it.comerc, receta = it.receta,
@@ -47,6 +50,8 @@ class MedicineRepository @Inject constructor
                 presentaciones = it.presentaciones, formaFarma = it.formaFarma, formaFarmaSimpli = it.formaFarmaSimpli, cluster = it.cluster, seccion = it.seccion) }.toMutableList())
 
             medicines = results.filter { it.nombre!!.startsWith(query, true) } as MutableList<MedicineModel>
+            Log.i("DIOS", "Tamaño : " + medicines.size.toString())
+
             letterDao.insertLetter(LetterEntity(letter))
         }
 
@@ -55,7 +60,7 @@ class MedicineRepository @Inject constructor
 
     suspend fun getMedicinesBySection(categorie : CategorieEntity) : MutableList<MedicineModel>
     {
-        var medicines : MutableList<MedicineModel> = mutableListOf()
+        var medicines : MutableList<MedicineModel>
 
         val section = categorieDao.getCategorie(categorie)
 
@@ -75,6 +80,15 @@ class MedicineRepository @Inject constructor
         }
 
         return medicines
+    }
+
+    suspend fun insertMedicineInLocal(med : MedicinaEntity) : Long
+    {
+        var result : Long = -1
+
+        result = medicineDao.insert(med)
+
+        return result
     }
 
     suspend fun getMedicineByName(name : String) : MedicineModel?
@@ -123,6 +137,7 @@ class MedicineRepository @Inject constructor
 
         if(auth.signIn(email, password))
         {
+            auth.updatePassword(password)
             success = true
         }
 
@@ -144,6 +159,66 @@ class MedicineRepository @Inject constructor
         }
 
         return success
+    }
+
+    suspend fun deleteAccount(email : String) : Boolean
+    {
+        var success = false
+
+        if(firebase.removeUser(email))
+        {
+            auth.deleteProfile()
+            success = true
+        }
+
+        return success
+    }
+
+    suspend fun saveMedicineIntoAfk(medicineName : String) : Boolean
+    {
+        var success = false
+
+        if(firebase.saveMedicineInAfk(medicineName))
+        {
+            success = true
+        }
+
+        return success
+    }
+
+    suspend fun cleanAccount(email : String) : Boolean
+    {
+        var success = false
+
+        if(firebase.cleanAccount(email))
+        {
+            success = true
+        }
+
+        return success
+    }
+
+    suspend fun getFakMedicines() : MutableList<String>
+    {
+        var medicines = mutableListOf<String>()
+
+        medicines = firebase.getFakMedicines()
+
+        return medicines
+    }
+
+    suspend fun deleteMedicineFromFak(name : String) : Boolean
+    {
+        var success = false
+
+        success = firebase.deleteMedicineFromFak(name)
+
+        return success
+    }
+
+    suspend fun retrieveAccount() : Account
+    {
+        return firebase.getAccount()
     }
 
     private fun entitiesToModels(medicines : MutableList<MedicinaEntity>?) : MutableList<MedicineModel> = medicines!!.map {

@@ -7,10 +7,13 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.Account
 import es.unex.giiis.medicinex.MedicinexApp
 import es.unex.giiis.medicinex.R
@@ -18,12 +21,16 @@ import es.unex.giiis.medicinex.databinding.ActivityManageProfileBinding
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
 import es.unex.giiis.medicinex.utilities.ScreenMessages
 import es.unex.giiis.medicinex.utilities.SyntaxChecker
+import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
+@AndroidEntryPoint
 class ManageProfile : AppCompatActivity()
 {
     private lateinit var binding: ActivityManageProfileBinding
     private var passwordVisible: Boolean = false
     private lateinit var account: Account
+    private val medicineViewModel : MedicineViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -40,15 +47,38 @@ class ManageProfile : AppCompatActivity()
         binding.autoLogin.setOnCheckedChangeListener { _, b ->
             if(b)
             {
-                MedicinexApp.preferences.setAutoFill(true)
-                MedicinexApp.preferences.setEmail(account.email)
-                MedicinexApp.preferences.setPassword(account.password)
+                medicineViewModel.autoLog(true, account)
             }
             else
             {
-                MedicinexApp.preferences.setAutoFill(false)
+                medicineViewModel.autoLog(false, account)
             }
         }
+
+        medicineViewModel.deleteUserResult.observe(this, Observer{
+            when(it)
+            {
+                true -> {}
+
+                false -> {
+                    ScreenMessages.showDialog(this, R.string.account_updated_failed_title, R.string.account_updated_failed_message)
+                }
+            }
+        })
+
+        medicineViewModel.cleanAccountResult.observe(this, Observer {
+            when(it)
+            {
+                true -> {
+                    ScreenMessages.showDialog(this, R.string.first_aid_kit_cleaned_title, R.string.first_aid_kit_cleaned_message)
+                }
+
+                false -> {
+                    ScreenMessages.showDialog(this, R.string.first_aid_kit_not_cleaned_title, R.string.first_aid_kit_not_cleaned_message)
+                }
+            }
+        })
+
     }
 
     private fun retrieveAccount()
@@ -70,22 +100,9 @@ class ManageProfile : AppCompatActivity()
 
     fun cleanAccount(view: View)
     {
-        if (view.isEnabled)
+        if (view.isEnabled && MedicinexApp.isThereInternet)
         {
-            val path: String = "accounts/" + GeneralUtilities.getAccountNameByMail(account.email) + "/firstAidKit"
-            val accountFirstAidKitRef = Firebase.database.getReference(path)
-
-            accountFirstAidKitRef.get().addOnSuccessListener {
-
-                for (cure in it.children)
-                {
-                    if(cure.value.toString() != "-1")
-                    {
-                        Firebase.database.getReference(path + "/${cure.key}").removeValue()
-                    }
-                }
-                ScreenMessages.showDialog(this, R.string.first_aid_kit_cleaned_title, R.string.first_aid_kit_cleaned_message)
-            }
+            medicineViewModel.cleanProfile(account.email)
         }
     }
 
@@ -112,7 +129,7 @@ class ManageProfile : AppCompatActivity()
     {
         if (view.isEnabled)
         {
-            if (GeneralUtilities.isThereInternet(this))
+            if (MedicinexApp.isThereInternet)
             {
                 val pass: String = binding.password.text.toString()
                 if (SyntaxChecker.isValidPasswordSyntax(pass) && pass == account.password)
@@ -125,21 +142,13 @@ class ManageProfile : AppCompatActivity()
 
                             try
                             {
-                                Firebase.database.getReference(
-                                    "accounts/" + GeneralUtilities.getAccountNameByMail(
-                                        account.email
-                                    )
-                                ).removeValue().addOnFailureListener {
-                                    ScreenMessages.showDialog(this, R.string.account_updated_failed_title, R.string.account_updated_failed_message)
-                                }.addOnSuccessListener {
-                                    FirebaseAuth.getInstance().currentUser?.delete()
-                                    val intent = Intent(this, Login::class.java)
-                                    MedicinexApp.preferences.clear()
-                                    intent.putExtra("logged_out", true)
-                                    startActivity(intent)
-                                    finish()
-                                }
-                            } catch (e: Exception){/**/}
+                                medicineViewModel.deleteAccount(account.email)
+
+                                val intent = Intent(this, Login::class.java)
+                                intent.putExtra("logged_out", true)
+                                startActivity(intent)
+                                finish()
+                            }catch (e: Exception){/**/}
                         }
                         .setNegativeButton(R.string.no) { dialogInterface, _ ->
                             dialogInterface.cancel()

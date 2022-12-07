@@ -24,7 +24,7 @@ interface MedicineDAO
     suspend fun buscarPorNRegistro(nregistro : String) : MedicinaEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(medicine: MedicinaEntity)
+    suspend fun insert(medicine: MedicinaEntity) : Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(medicines: MutableList<MedicinaEntity>)

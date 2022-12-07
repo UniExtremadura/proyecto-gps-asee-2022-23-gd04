@@ -4,22 +4,47 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import es.unex.giiis.medicinex.MedicinexApp
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.databinding.ActivityRecoverAccountBinding
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
 import es.unex.giiis.medicinex.utilities.ScreenMessages
 import es.unex.giiis.medicinex.utilities.SyntaxChecker
+import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
+@AndroidEntryPoint
 class RecoverAccount : AppCompatActivity()
 {
     private lateinit var binding : ActivityRecoverAccountBinding
+    private val medicineViewModel : MedicineViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         binding = ActivityRecoverAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        medicineViewModel.recoverPasswordResult.observe(this, Observer {
+            when(it)
+            {
+                true -> {
+                    runOnUiThread {
+                        ScreenMessages.showDialog(this, R.string.reset_password_title, R.string.reset_password_message)
+                        binding.recoverButton.isEnabled = true
+                    }
+                }
+                false -> {
+                    runOnUiThread {
+                        ScreenMessages.showDialog(this, R.string.reset_password_error_title, R.string.reset_password_error_message)
+                        binding.recoverButton.isEnabled = true
+                    }
+                }
+            }
+        })
     }
 
     fun closeButtonAction(view: View)
@@ -36,36 +61,21 @@ class RecoverAccount : AppCompatActivity()
         {
             view.isEnabled = false
             val email : String = binding.emailField.text.toString()
-            if(GeneralUtilities.isThereInternet(this))
+
+            if(MedicinexApp.isThereInternet)
             {
                 if(SyntaxChecker.isValidMailSyntax(email))
                 {
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                        .addOnCompleteListener{
-                                task ->
-                            if(task.isSuccessful)
-                            {
-                                runOnUiThread {
-                                    ScreenMessages.showDialog(this, R.string.reset_password_title, R.string.reset_password_message)
-                                    binding.recoverButton.isEnabled = true
-                                }
-                            }
-                            else
-                            {
-                                runOnUiThread {
-                                    ScreenMessages.showDialog(this, R.string.reset_password_error_title, R.string.reset_password_error_message)
-                                    binding.recoverButton.isEnabled = true
-                                }
-                            }
-                        }
+                    medicineViewModel.recoverAccountPassword(email)
                 }
                 else
                 {
                     runOnUiThread{
                         Toast.makeText(this, R.string.fill_fields, Toast.LENGTH_SHORT).show()
-                        binding.recoverButton.isEnabled = true
                     }
                 }
+
+                binding.recoverButton.isEnabled = true
             }
             else
             {

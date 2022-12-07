@@ -4,24 +4,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.Account
+import es.unex.giiis.medicinex.MedicinexApp
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.databinding.ActivityEditProfileBinding
 import es.unex.giiis.medicinex.utilities.AppExecutors
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
 import es.unex.giiis.medicinex.utilities.ScreenMessages
 import es.unex.giiis.medicinex.utilities.SyntaxChecker
+import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
+@AndroidEntryPoint
 class EditProfile : AppCompatActivity()
 {
     private lateinit var binding : ActivityEditProfileBinding
     private var passwordVisible : Boolean = false
     private lateinit var account : Account
-
+    private val medicineViewModel : MedicineViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -30,15 +37,30 @@ class EditProfile : AppCompatActivity()
         setContentView(binding.root)
 
         retrieveAccount()
+
+        medicineViewModel.editProfileResult.observe(this, Observer {
+            when(it)
+            {
+                true -> {
+                    runOnUiThread {
+
+                        medicineViewModel.getAccount()
+                        ScreenMessages.showDialog(this, R.string.account_updated_successfully_title, R.string.account_updated_successfully_message)
+                    }
+                }
+
+                false -> {
+                    runOnUiThread{
+                        ScreenMessages.showDialog(this, R.string.account_updated_failed_title, R.string.account_updated_failed_message)
+                    }
+                }
+            }
+        })
     }
 
     private fun retrieveAccount()
     {
-        account = Account(intent.getStringExtra("USERNAME").toString(),
-            intent.getStringExtra("EMAIL").toString(),
-            intent.getStringExtra("PASSWORD").toString(),
-            intent.getStringExtra("FULL_NAME").toString()
-        )
+        account = Account(intent.getStringExtra("USERNAME").toString(), intent.getStringExtra("EMAIL").toString(), intent.getStringExtra("PASSWORD").toString(), intent.getStringExtra("FULL_NAME").toString())
 
         binding.userField.setText(account.username)
         binding.emailField.setText(account.email)
@@ -53,58 +75,27 @@ class EditProfile : AppCompatActivity()
             view.isEnabled = false
             AppExecutors.instance?.networkIO()?.execute {
 
-                val account = Account(
-                    binding.userField.text.toString(),
-                    binding.emailField.text.toString(),
-                    binding.passwordField.text.toString(),
-                    binding.nameField.text.toString()
-                )
+                val account = Account(binding.userField.text.toString(), binding.emailField.text.toString(), binding.passwordField.text.toString(), binding.nameField.text.toString())
 
-                if (GeneralUtilities.isThereInternet(this))
+                if (MedicinexApp.isThereInternet)
                 {
                     if (SyntaxChecker.isValidAccountSyntax(account))
                     {
-                        updateAccountAuth(account) // Firebase auth update.
-
+                        medicineViewModel.editAccount(account)
                     } else
                     {
                         runOnUiThread {
                             ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.account_invalid_message)
-                            binding.updateButton.isEnabled = true
                         }
+                    }
+
+                    runOnUiThread{
+                        binding.updateButton.isEnabled = true
                     }
                 }
             }
         }
     }
-
-    private fun updateAccountAuth(account : Account)
-    {
-        FirebaseAuth.getInstance().currentUser?.updatePassword(account.password)?.addOnCompleteListener {
-
-            if(it.isSuccessful)
-            {
-                runOnUiThread {
-
-                    val database = Firebase.database
-                    val accountRef = database.getReference("accounts/" + account.email.substring(0, account.email.indexOf('@')))
-                    accountRef.child("fullName").setValue(account.fullName) // Firebase realtime account fullName update.
-                    accountRef.child("password").setValue(account.password) // Firebase realtime account password update.
-                    accountRef.child("username").setValue(account.username) // Firebase realtime account username update.
-                    ScreenMessages.showDialog(this, R.string.account_updated_successfully_title, R.string.account_updated_successfully_message)
-                    binding.updateButton.isEnabled = true
-                }
-            }
-            else
-            {
-                runOnUiThread{
-                    ScreenMessages.showDialog(this, R.string.account_updated_failed_title, R.string.account_updated_failed_message)
-                    binding.updateButton.isEnabled = true
-                }
-            }
-        }
-    }
-
 
     fun showHidePassword(view : View)
     {

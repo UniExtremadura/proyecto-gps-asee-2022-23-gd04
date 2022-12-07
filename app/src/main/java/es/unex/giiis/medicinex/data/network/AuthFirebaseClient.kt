@@ -10,5 +10,7 @@ interface AuthFirebaseClient
 
     suspend fun updatePassword(password : String) : Boolean
 
+    suspend fun deleteProfile()
+
     suspend fun logOut()
 }

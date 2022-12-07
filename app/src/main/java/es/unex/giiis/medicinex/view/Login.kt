@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.MedicinexApp
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.databinding.ActivityLoginBinding
@@ -18,11 +22,15 @@ import es.unex.giiis.medicinex.utilities.AppExecutors
 import es.unex.giiis.medicinex.utilities.GeneralUtilities
 import es.unex.giiis.medicinex.utilities.ScreenMessages
 import es.unex.giiis.medicinex.utilities.SyntaxChecker
+import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
+
+@AndroidEntryPoint
 class Login : AppCompatActivity()
 {
     private lateinit var binding : ActivityLoginBinding
     private var passwordVisible : Boolean = false
+    private val medicineViewModel : MedicineViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -42,21 +50,27 @@ class Login : AppCompatActivity()
             {
                 if(MedicinexApp.isThereInternet)
                 {
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(autoEmail, autoPassword).addOnCompleteListener {
-
-                        if (it.isSuccessful)
-                        {
-                            goMainMenu(autoEmail, autoPassword)
-                        }
-                        else
-                        {
-                            ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.incorrect_credentials_message)
-                        }
-                    }
+                    medicineViewModel.logIn(autoEmail, autoPassword)
                 }
             }
             catch (e : Exception){/**/}
         }
+
+        medicineViewModel.loginResult.observe(this, Observer {
+            when(it)
+            {
+                true -> {
+                    val email = binding.usermail.text.toString()
+                    val password = binding.password.text.toString()
+                    goMainMenu(email, password)}
+
+                false -> {
+                    runOnUiThread{
+                        ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.incorrect_credentials_message)
+                    }
+                }
+            }
+        })
     }
 
     fun showHidePassword(view : View)
@@ -106,23 +120,8 @@ class Login : AppCompatActivity()
                         {
                             try
                             {
-                                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener{
-
-                                    if(it.isSuccessful)
-                                    {
-                                        runOnUiThread {
-                                            binding.loginButton.isEnabled = true
-                                            goMainMenu(email, password)
-                                        }
-                                    }
-                                    else
-                                    {
-                                        runOnUiThread{
-                                            ScreenMessages.showDialog(this, R.string.incorrect_credentials_title, R.string.incorrect_credentials_message)
-                                            binding.loginButton.isEnabled = true
-                                        }
-                                    }
-                                }
+                                medicineViewModel.logIn(email, password)
+                                binding.loginButton.isEnabled = true
                             }catch (e: Exception) {/**/}
                         }
                         else if(!emailOk && !passwordOk)
@@ -180,13 +179,8 @@ class Login : AppCompatActivity()
     {
         if(email != null && password != null)
         {
-            val database = Firebase.database
-            val accountRef = database.getReference("accounts/" + GeneralUtilities.getAccountNameByMail(email) + "/password")
-            accountRef.setValue(password).addOnSuccessListener {
-
-                val intent = Intent(this, Menu::class.java)
-                startActivity(intent)
-            }
+            val intent = Intent(this, Menu::class.java)
+            startActivity(intent)
         }
     }
 }
