@@ -47,7 +47,7 @@ class MedicineInformation(private var medicinaEntity : MedicinaEntity) : Fragmen
             binding.lab.text = lab
             binding.identifiers.text = identifiers
 
-            if(medicinaEntity.conduc == true) { binding.conducIv.setImageResource(R.drawable.save_driving) }
+            if(medicinaEntity.conduc == false) { binding.conducIv.setImageResource(R.drawable.save_driving) }
             else { binding.conducIv.setImageResource(R.drawable.unsafe_driving) }
 
             if(medicinaEntity.comerc == true) { binding.merchantableIv.setImageResource(R.drawable.merchantable) }

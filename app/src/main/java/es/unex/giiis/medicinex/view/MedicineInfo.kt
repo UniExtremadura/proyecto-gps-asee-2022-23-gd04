@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import es.unex.giiis.medicinex.FragmentAdapter
+import es.unex.giiis.medicinex.data.database.entities.toModel
 import es.unex.giiis.medicinex.data.model.toEntity
 import es.unex.giiis.medicinex.viewmodel.MedicineViewModel
 
@@ -80,7 +81,7 @@ class MedicineInfo : AppCompatActivity()
         {
             val intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, medicamento.toString())
+                putExtra(Intent.EXTRA_TEXT, medicamento.toModel().toString())
                 type = "text/plain"
             }
             val shareIntent = Intent.createChooser(intent, null)

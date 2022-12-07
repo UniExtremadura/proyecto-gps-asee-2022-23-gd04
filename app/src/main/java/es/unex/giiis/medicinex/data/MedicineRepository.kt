@@ -1,6 +1,5 @@
 package es.unex.giiis.medicinex.data
 
-import android.util.Log
 import es.unex.giiis.medicinex.Account
 import es.unex.giiis.medicinex.data.database.dao.CategorieDAO
 import es.unex.giiis.medicinex.data.database.dao.LetterDAO
@@ -38,11 +37,9 @@ class MedicineRepository @Inject constructor
         if(letra != null)
         {// La letra existía, por tanto, todas las medicinas que empiecen por dicha letra están en local.
             medicines = entitiesToModels(medicineDao.buscarPorNombre(query))
-            Log.i("DIOS", "No existía la letra")
         }
         else
         {// La letra no existía, por tanto, hay que descargar todas las medicinas que comiencen por dicha letra de Firebase.
-            Log.i("DIOS", "Existía la letra")
 
             val results = firebase.getMedicinesByLetter(letter)
             medicineDao.insert(results.map { MedicinaEntity(nRegistro = it.nRegistro, nombre = it.nombre, labTitular = it.labTitular, cPresc = it.cPresc, comerc = it.comerc, receta = it.receta,
@@ -50,7 +47,6 @@ class MedicineRepository @Inject constructor
                 presentaciones = it.presentaciones, formaFarma = it.formaFarma, formaFarmaSimpli = it.formaFarmaSimpli, cluster = it.cluster, seccion = it.seccion) }.toMutableList())
 
             medicines = results.filter { it.nombre!!.startsWith(query, true) } as MutableList<MedicineModel>
-            Log.i("DIOS", "Tamaño : " + medicines.size.toString())
 
             letterDao.insertLetter(LetterEntity(letter))
         }

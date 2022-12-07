@@ -37,16 +37,8 @@ class MedicineFBService @Inject constructor(private val realtime : FirebaseDatab
                     for(medicina in letra.children)
                     {
                         medicines.add(GeneralUtilities.parseMedicine(medicina).toModel())
-                        //adapter.notifyItemInserted(categorieMedicines.size - 1)
                     }
                 }
-            }
-        }
-        else
-        {
-            withContext(Dispatchers.Main)
-            {
-                //ScreenMessages.noInternetConnection(binding.sectionName.context)
             }
         }
 
@@ -70,8 +62,6 @@ class MedicineFBService @Inject constructor(private val realtime : FirebaseDatab
 
         if(letter != ' ')
         {
-            var failed = false
-
             if(MedicinexApp.isThereInternet)
             {
                 val secciones = CatalogueProvider.categories
@@ -93,14 +83,8 @@ class MedicineFBService @Inject constructor(private val realtime : FirebaseDatab
                     }
                     else
                     {
-                        failed = true
                         break
                     }
-                }
-
-                if(!failed)
-                {
-                    //db.letterDao().insertLetter(LetterEntity(letra))
                 }
             }
         }
