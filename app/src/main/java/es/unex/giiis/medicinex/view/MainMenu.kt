@@ -67,7 +67,6 @@ class MainMenu : Fragment()
             {
                 if(!results.contains(med))
                 {
-                    results.add(med)
                     addItemToRV(med)
                 }
             }
