@@ -64,7 +64,7 @@ dependencies {
     testImplementation 'io.mockk:mockk:1.12.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.0'
 
     // Room:
     def room_version = "2.4.3"
