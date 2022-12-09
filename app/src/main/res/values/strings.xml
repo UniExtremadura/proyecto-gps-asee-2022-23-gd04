@@ -73,6 +73,8 @@
     <string name="wrong_password">Contraseña incorrecta</string>
     <string name="first_aid_kit_cleaned_title">Botiquín renovado</string>
     <string name="first_aid_kit_cleaned_message">Se ha vaciado por completo el botiquín.</string>
+    <string name="first_aid_kit_not_cleaned_title">Error al limpiar</string>
+    <string name="first_aid_kit_not_cleaned_message">No se ha podido vaciar el botiquín.</string>
     <string name="glass">Botón de búsqueda</string>
     <string name="catalogue">Buscar en catálogo</string>
     <string name="open_settings">Abrir los ajustes del perfil</string>
@@ -113,6 +115,6 @@
     <string name="searching">Por favor, espere...</string>
     <string name="reminder_created">Recordatorio creado</string>
     <string name="trash">Basura</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete_medicine_success">Medicamento borrado</string>
+    <string name="delete_medicine_fail">No se pudo borrar</string>
 </resources>
