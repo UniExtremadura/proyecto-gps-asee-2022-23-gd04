@@ -1,7 +1,6 @@
 package es.unex.giiis.medicinex.data.network
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import es.unex.giiis.medicinex.Account
 import es.unex.giiis.medicinex.R
 import es.unex.giiis.medicinex.utilities.ScreenMessages
