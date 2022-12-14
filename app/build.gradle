@@ -5,12 +5,21 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'org.sonarqube' version '3.5.0.2730'
 }
 
 android {
     namespace 'es.unex.giiis.medicinex'
     compileSdk 32
-
+    
+    sonarqube {
+      properties {
+        property 'sonar.projectKey', 'UniExtremadura_proyecto-gps-asee-2022-23-gd04'
+        property 'sonar.organization', 'uniextremadura'
+        property 'sonar.host.url', 'https://sonarcloud.io'
+      }
+    }
+    
     kapt {
         arguments {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
