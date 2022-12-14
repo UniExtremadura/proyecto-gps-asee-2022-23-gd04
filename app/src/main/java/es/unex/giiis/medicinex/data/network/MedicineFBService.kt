@@ -1,6 +1,5 @@
 package es.unex.giiis.medicinex.data.network
 
-import android.content.Intent
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
